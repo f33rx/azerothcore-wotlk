@@ -7327,6 +7327,11 @@ bool Spell::CanAutoCast(Unit* target)
 SpellCastResult Spell::CheckRange(bool strict)
 {
     Unit* unitCaster = m_caster->ToUnit();
+    // Ritual of Summoning targets a party member who is not at the portal.
+    // RangeIndex 4 is 30 yards, which rejects the only people worth summoning.
+    if (m_spellInfo->Id == 698)
+        return SPELL_CAST_OK;
+
     // Don't check for instant cast spells
     if (!strict && m_casttime == 0)
         return SPELL_CAST_OK;
