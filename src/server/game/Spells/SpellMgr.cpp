@@ -3044,6 +3044,12 @@ void SpellMgr::LoadSpellInfoStore()
         }
     }
 
+    // Ritual of Summoning (698) targets a party member who is not here. The
+    // portal is created at the caster. Spell.dbc leaves AttributesEx2 clear,
+    // so CheckCast raycasts to that player and returns SPELL_FAILED_LINE_OF_SIGHT.
+    if (mSpellInfoMap.size() > 698 && mSpellInfoMap[698])
+        mSpellInfoMap[698]->AttributesEx2 |= SPELL_ATTR2_IGNORE_LINE_OF_SIGHT;
+
     LoadCreatureImmunities();
 
     LOG_INFO("server.loading", ">> Loaded Spell Custom Attributes in {} ms", GetMSTimeDiffToNow(oldMSTime));
